@@ -1,0 +1,66 @@
+
+<body>
+    Bremer-VIP.js
+
+   
+    <div id=div1></div>
+
+    <script src = "https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src = "Bremer-VIP.js"></script>
+    <script>
+        let queryJSON = {
+            format: 'json',
+            gene: 'GATA6',
+            cohort: 'PAAD',
+            protocol: 'RSEM',
+            page: 1,
+            page_size: 250,
+            sort_by: 'tcga_participant_barcode'
+        }
+        
+        let hosturl = 'https://firebrowse.herokuapp.com'
+        let endpointurl = 'http://firebrowse.org/api/v1/Samples/mRNASeq?'
+        let overall = hosturl + '?' + endpointurl + '?'
+        let query = jQuery.param(queryJSON)
+        let x_axis = fetch(overall + query)
+
+        let queryJSON2 = {
+        format: 'json',
+        gene: 'KRAS',
+        cohort: 'PAAD',
+        protocol: 'RSEM',
+        page: 1,
+        page_size: 183,
+        sort_by: 'tcga_participant_barcode'
+        }
+        let query2 = jQuery.param(queryJSON2)
+        let y_axis = fetch(endpointurl + query2)    
+    </script>
+
+    <script>
+        let plotData = {
+        x: [],
+        y: [],
+        text: [],
+        mode: 'markers',
+        type: 'scatter'
+    }
+
+        x_axis.then(function(response) {
+            let x_data = addX(response)
+            plotData.x = x_data
+        })
+        x_axis.then(function(response) {
+            let text_data = addText(response)
+            plotData.text = text_data
+        })
+        y_axis.then(function(response) {
+            let y_data = addY(response)
+            plotData.y = y_data
+        })
+
+        //const div = DOM.element('div')
+        Plotly.newPlot(div1, [plotData])
+    </script>
+</body>
