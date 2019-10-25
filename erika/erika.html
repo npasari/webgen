@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+	<head>
+        <meta charset='utf-8' />
+        <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+        <title>WebGen Data Exploration</title>
+        <link href='https://fonts.googleapis.com/css?family=Dosis:400,700' rel='stylesheet' />
+        <link href='style.css' rel='stylesheet' />
+    </head>
+    
+	<body>
+
+        <h1 id='title' style='color:blue'>WebGen: Data Exploration</h1>
+
+        <h2 id='piechart'>Case Contribution by Project to the Genomic Data Commons</h2>
+
+        <p>
+            <ul>
+                <li><b>Interactive:</b> Select a project in the legend to exclude it from the pie chart.</li>
+                <li><b>Downloadable:</b> Hover over plot, then click the camera icon to download plot as a png.</li>
+            </ul>
+        </p>
+
+        <div id='root'></div>
+
+        <script src = 'https://cdn.plot.ly/plotly-latest.min.js'></script>
+        <script src = 'erika.js'></script>
+
+        <div id=div1></div>
+
+        <script> 
+            let url = 'https://api.gdc.cancer.gov/projects'
+            let body = ({
+                'fields': 'project_id,summary.case_count',
+                'from': 0,
+                'size': 100
+            })
+            let projectData = betterFetch(url,body)
+        </script>
+              
+        <script>
+            projectData.then(function(response) {
+                let pieChartData = getPieChartData(response);
+                let plotData = {
+                    values: pieChartData.map(x=>x['y']),
+                    labels: pieChartData.map(x=>x['label']),
+                    type: 'pie',
+                };
+                let layout = {
+                    height:400,
+                    width: 500
+                };
+            Plotly.newPlot('div1', [plotData]);
+            });
+        </script>
+
+
+
+
+
+
+
+
+
+
+        <div id=div2></div>
+
+        <script> 
+            let url2 = 'https://api.gdc.cancer.gov/files'
+            let body2 = ({
+                'fields': 'cases.project.project_id',
+                'value': ['TCGA-PRAD'],
+                'from': 0,
+                'size': 600
+            })
+            let projectData2 = betterFetch(url2,body2)
+        </script>
+
+        <script>
+            let finalbarplot= {
+                x: object.keys(barChartData),
+                y: barChartData,
+                type: 'bar'
+            }
+            Plotly.newPlot('div2',[finalbarplot])
+        </script>
+
+    </body>
+    
+</html>
