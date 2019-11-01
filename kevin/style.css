@@ -1,0 +1,49 @@
+.PageTitle {
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 17px
+}
+
+.CohortGenesInput {
+	border: 1px solid #ccc;
+    border-radius: 10px;
+    width: 30%;
+    font-size: 17px;
+    text-align: center;
+	padding: 4px 7px;
+    outline: 1;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 2px   
+}
+
+select {
+    padding: 5px 8px;
+    width: 30%;
+    border-radius: 5px;
+    box-shadow: none;
+    display: block;
+    margin: 0 auto;
+    position: relative;
+    left: 35%;
+    text-align-last: center
+}
+
+.exampleSubmitButton {
+    padding: 5px 8px;
+    width: 15%;
+    position: relative;
+    left: 35%;
+    color: rgb(0, 0, 0); 
+    background: transparent;
+    border-radius: 5px;
+    box-shadow: none;
+    border: 2px solid rgb(0, 0, 0);
+    
+}
+
+.exampleSubmitButton:hover {      
+    background-color: rgb(37, 41, 43);      
+    color: white; 
+}

@@ -1,1 +1,78 @@
+<!DOCTYPE html>
 
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script type="text/javascript" src = "https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script type="text/javascript" src = "main.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    </head>
+    <body>
+        <h1 class = "PageTitle">VIP WebGen API Querying Application</h1>
+        
+        <input id = 'cohort_list' class = "CohortGenesInput" placeholder = "Enter List of Cohorts Here">
+        <input id = 'gene_list' class = "CohortGenesInput" placeholder = "Enter List of Genes Here">
+        <br>
+        <select id = 'plot_type' class = "selectStyle">
+          <option value="" disabled selected hidden>Visualization Type</option>
+          <option value = "histogram">Histogram</option>
+          <option value = "heatmap">Heat Map</option>
+        </select>
+        <br>
+        <button onclick="setExampleVars()" id = 'exampleButton' class = "exampleSubmitButton">
+          Use Example
+        </button>
+        <button onclick = "setVars()" id = 'submitButton' class = "exampleSubmitButton">
+          Submit
+        </button>
+  
+    <!--
+      This code bellow initializes the first div element.
+    -->
+        <div id = div0 style = "margin-top: 30px"></div>
+    
+    <!--
+      This code bellow contains the JS code for building the plots to display.
+    -->
+      <script type="text/javascript">
+      // Wait for user input to build plots:
+      function setVars() {
+        cohort_list = document.getElementById('cohort_list').value.toUpperCase().split(',');
+        gene_list = document.getElementById('gene_list').value.toUpperCase().split(',');
+        
+        // Check what type of plot the user wants:
+        plot_type = document.getElementById('plot_type').value.toLowerCase();
+  
+        // Fetch RNA sequence data and display requested plots:
+        var dataToPlotInfo = ethan_getEFDdata(cohort_list, gene_list, plot_type);
+        
+  
+        dataToPlotInfo.then(function(data) {
+          var dataToPlot = data[0];
+          var layoutArray = data[1];
+          
+          // Create plot for each gene/cohort combination:
+          for (var i = 0; i < dataToPlot.length; i++) {
+            addElement("div" + i, "div0");
+            Plotly.newPlot("div" + i, dataToPlot[i], layoutArray[i], {responsive: true});
+          };
+        });
+      };
+    </script>
+  
+    <!--
+      This code bellow is for if the user wants to use the example input cohort and gene lists.
+    -->
+    <script>
+    // This script is to set the cohort and gene list examples if the user clicks the use example button:
+    function setExampleVars() {
+        document.getElementById('cohort_list').value = 'BRCA, PAAD';
+        document.getElementById('gene_list').value = 'TP53, GATA6';
+        document.getElementById('plot_type').value = 'histogram';
+      };
+    </script>
+
+    </body>
+</html>
