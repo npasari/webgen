@@ -1,0 +1,95 @@
+</body>
+</html>
+<script type="text/javascript">
+  function subimages(id, level, x, y) {
+    return (
+      'https://api.gdc.cancer.gov/tile/' +
+      id +
+      '?level=' +
+      level +
+      '&x=' +
+      x +
+      '&y=' +
+      y
+    );
+  }
+function getImage(){
+var x=document.getElementById("number").value;
+var y=document.getElementById("number1").value;
+var level=document.getElementById("number2").value;
+var id = document.getElementById("ID").value;
+slide1 = new Promise((resolve, reject) => {
+      let image = new Image();
+      image.onload = () => resolve(image);
+      image.onerror = reject;
+      image.crossOrigin = "anonymous";
+      image.src = subimages(id, level, x, y);
+
+      var br = document.createElement("br");
+      document.body.appendChild(br);
+
+      document.body.appendChild(document.createTextNode("Level: " + level));
+      document.body.appendChild(document.createTextNode("     X: " + x));
+      document.body.appendChild(document.createTextNode("     Y: " + y));
+      document.body.appendChild(document.createTextNode("     ID: " + id));
+
+      var br = document.createElement("br");
+      document.body.appendChild(br);
+      
+
+      fetch(image.src)
+        .then(res => {
+            if (res.ok) {
+                image.width = 300;
+                image.height = 300;
+                document.body.appendChild(image);
+            }
+            else{
+              document.body.appendChild(document.createTextNode("Not available"));
+            }
+            
+        })
+        var br = document.createElement("br");
+      document.body.appendChild(br);
+    });
+}
+function getWholeImage()
+{
+  var number2=document.getElementById("number2").value;
+  var id = document.getElementById("ID").value;
+  let arr = [];
+    for (let j = 0; j <= 9; j++) {
+      for (let i = 0; i <= 9; i++) {
+        
+        let image = new Image();
+  
+        image.src = subimages(id, number2, i, j);
+
+        fetch(image.src)
+        .then(res => {
+            if (res.ok) {
+                image.width = 100;
+                image.height = 100;
+                document.body.appendChild(image);
+            }
+        })
+      }
+    }
+}
+</script>
+<h1>Webgen Image Retriever</h1>
+<h2>Displays a tissue slide image from GDC given file ID</h2>
+<h3>Sample File ID's (different from Case UUID)</h3>
+<ul>
+  <li>65fa0750-e967-489b-a4e3-870acdae25dd</li>
+  <li>0d7914e2-d807-4494-b5a6-410cb05f269f</li>
+  <li>75f2e82a-e182-4698-b2dd-936d084d1073</li>
+</ul>
+<form>
+X:<input type="text" id="number" name="number" style="width: 50px"/><br/>
+Y:<input type="text" id="number1" name="number1" style="width: 50px"/><br/>
+Zoom:<input type="text" id="number2" name="number2" style="width: 50px"/><br/>
+ID:<input type="text" id="ID" name="ID" style="width: 500px"/><br/>
+<input type="button" value="New Image" onclick="getImage()"/>
+<input type="button" value="Whole Image" onclick="getWholeImage()"/>
+</form>
