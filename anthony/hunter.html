@@ -1,5 +1,4 @@
-</body>
-</html>
+
 <script type="text/javascript">
   function subimages(id, level, x, y) {
     return (
@@ -76,20 +75,65 @@ function getWholeImage()
       }
     }
 }
+
+
+function myFunction() {
+  /* Get the text field */
+  var copyText = "65fa0750-e967-489b-a4e3-870acdae25dd";
+
+  /* Select the text field */
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+  /* Copy the text inside the text field */
+  document.execCommand("copy");
+
+}
+
 </script>
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Web Genomics</title>
+</head>
+
+<div class="wrapper">
 <h1>Webgen Image Retriever</h1>
-<h2>Displays a tissue slide image from GDC given file ID</h2>
-<h3>Sample File ID's (different from Case UUID)</h3>
-<ul>
+<h3>Displays a tissue slide image from GDC given file ID</h3>
+<p>Sample File ID's (different from Case UUID)</p>
   <li>65fa0750-e967-489b-a4e3-870acdae25dd</li>
   <li>0d7914e2-d807-4494-b5a6-410cb05f269f</li>
   <li>75f2e82a-e182-4698-b2dd-936d084d1073</li>
-</ul>
+</br>
+
 <form>
-X:<input type="text" id="number" name="number" style="width: 50px"/><br/>
-Y:<input type="text" id="number1" name="number1" style="width: 50px"/><br/>
-Zoom:<input type="text" id="number2" name="number2" style="width: 50px"/><br/>
-ID:<input type="text" id="ID" name="ID" style="width: 500px"/><br/>
-<input type="button" value="New Image" onclick="getImage()"/>
-<input type="button" value="Whole Image" onclick="getWholeImage()"/>
+X:<input type="text" id="number" name="number" /><br/>
+Y:<input type="text" id="number1" name="number1" /><br/>
+Zoom:<input type="text" id="number2" name="number2"/><br/>
+ID:<input type="text" id="ID" name="ID"/><br/>
+
+<button type="button" class="btn btn-primary" onclick="getImage()" style="margin-bottom: 10px;">New Image</button>
+<button type="button" class="btn btn-primary" onclick="getWholeImage()" style="margin-bottom: 10px;">Whole Image</button>
 </form>
+</div>
+
+<style>
+  .wrapper {background-color: antiquewhite; 
+  width: 80%; 
+  text-align: center; 
+  margin: 0 auto; 
+  margin-top: 20px; 
+  margin-bottom: 20px;}
+
+  #ID {width: 500px;}
+  h1   {color: blue;}
+  h3   {color: rgb(153, 0, 255);}
+  input {margin-bottom: 10px;margin-left: 10px}
+  </style>
