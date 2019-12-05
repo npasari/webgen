@@ -1,3 +1,50 @@
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script async src="opencv/opencv.js"></script>
+    <title>Web Genomics</title>
+</head>
+
+<div class="row">
+
+    <div class="wrapper">
+      <h1>Webgen Image Retriever</h1>
+      <h3>Displays a tissue slide image from GDC given file ID</h3>
+      <p>Sample File ID's (different from Case UUID)</p>
+        <li>65fa0750-e967-489b-a4e3-870acdae25dd</li>
+        <li>0d7914e2-d807-4494-b5a6-410cb05f269f</li>
+        <li>75f2e82a-e182-4698-b2dd-936d084d1073</li>
+      </br>
+
+      <form>
+      X:<input type="text" id="number" name="number" /><br/>
+      Y:<input type="text" id="number1" name="number1" /><br/>
+      Zoom:<input type="text" id="number2" name="number2"/><br/>
+      ID:<input type="text" id="ID" name="ID"/><br/>
+
+
+      <button type="button" class="btn btn-primary" onclick="getImage()" style="margin-bottom: 10px;">New Image</button>
+      <button type="button" class="btn btn-primary" onclick="getWholeImage()" style="margin-bottom: 10px;">Whole Image</button>
+      </form>
+    </div>
+
+    <div class="wrapper" style="background-color: bisque;">
+        <h1 style="color: brown">Canny Edge Detection</h1>
+        <h3 style="color: rgb(155, 82, 82)">Upload an image to detect edges using OpenCV</h3>
+      <div class="inputoutput">
+        <img id="imageSrc" alt="Choose an Image" />
+        <div class="caption"><input type="file" id="fileInput" name="file" /></div>
+      </div>
+      <div class="inputoutput">
+        <canvas id="canvasOutput" ></canvas>
+      </div>
+    </div>
+
+</div>
+
 
 <script type="text/javascript">
   function subimages(id, level, x, y) {
@@ -90,47 +137,40 @@ function myFunction() {
 
 }
 
+let imgElement = document.getElementById('imageSrc');
+      let inputElement = document.getElementById('fileInput');
+      inputElement.addEventListener('change', (e) => {
+        imgElement.src = URL.createObjectURL(e.target.files[0]);
+      }, false);
+      imgElement.onload = function() {
+      let src = cv.imread(imgElement);
+      let dst = new cv.Mat();
+      cv.cvtColor(src, src, cv.COLOR_RGB2GRAY, 0);
+      // You can try more different parameters
+      cv.Canny(src, dst, 190, 200, 3, false);
+      cv.imshow('canvasOutput', dst);
+      src.delete(); dst.delete();
+
+      };
+
 </script>
+      
 
 
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <title>Web Genomics</title>
-</head>
-
-<div class="wrapper">
-<h1>Webgen Image Retriever</h1>
-<h3>Displays a tissue slide image from GDC given file ID</h3>
-<p>Sample File ID's (different from Case UUID)</p>
-  <li>65fa0750-e967-489b-a4e3-870acdae25dd</li>
-  <li>0d7914e2-d807-4494-b5a6-410cb05f269f</li>
-  <li>75f2e82a-e182-4698-b2dd-936d084d1073</li>
-</br>
-
-<form>
-X:<input type="text" id="number" name="number" /><br/>
-Y:<input type="text" id="number1" name="number1" /><br/>
-Zoom:<input type="text" id="number2" name="number2"/><br/>
-ID:<input type="text" id="ID" name="ID"/><br/>
-
-<button type="button" class="btn btn-primary" onclick="getImage()" style="margin-bottom: 10px;">New Image</button>
-<button type="button" class="btn btn-primary" onclick="getWholeImage()" style="margin-bottom: 10px;">Whole Image</button>
-</form>
-</div>
 
 <style>
-  .wrapper {background-color: antiquewhite; 
-  width: 80%; 
-  text-align: center; 
-  margin: 0 auto; 
-  margin-top: 20px; 
-  margin-bottom: 20px;}
+  .row {
+    display: flex;}
+
+  .wrapper {
+    background-color: antiquewhite; 
+    text-align: center;
+    flex: 50%;
+    padding: 10px;
+  }
 
   #ID {width: 500px;}
   h1   {color: blue;}
